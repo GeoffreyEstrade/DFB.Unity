@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FBExchangeFile>
+	<fileHeader company="Schneider Automation" product="Unity Pro XL V11.0 - 151207" dateTime="date_and_time#2016-11-9-10:20:42" content="Fichier source bloc fonctions" DTDVersion="41"></fileHeader>
+	<contentHeader name="DFB" version="0.0.702" dateTime="date_and_time#2016-4-7-17:53:46"></contentHeader>
+	<FBSource nameOfFBType="M_CHG_BYTE_EX" version="15.01" dateTime="dt#2016-11-07-12:20:36">
+		<comment>Notification des changements de valeur avec interval</comment>
+		<attribute name="TypeCodeCheckSumString" value="8E50"></attribute>
+		<attribute name="TypeSignatureCheckSumString" value="6F24"></attribute>
+		<inputParameters>
+			<variables name="IN" typeName="BYTE">
+				<comment>Entrée</comment>
+				<attribute name="PositionPin" value="1"></attribute>
+			</variables>
+		</inputParameters>
+		<outputParameters>
+			<variables name="INC" typeName="EBOOL">
+				<comment>La valeur à augmenté</comment>
+				<attribute name="PositionPin" value="5"></attribute>
+			</variables>
+			<variables name="CHG" typeName="EBOOL">
+				<comment>La valeur à changé</comment>
+				<attribute name="PositionPin" value="3"></attribute>
+			</variables>
+			<variables name="DEC" typeName="EBOOL">
+				<comment>La valeur à diminué</comment>
+				<attribute name="PositionPin" value="4"></attribute>
+			</variables>
+			<variables name="OLD" typeName="BYTE">
+				<comment>Ancienne valeur</comment>
+				<attribute name="PositionPin" value="1"></attribute>
+			</variables>
+			<variables name="NEW" typeName="BYTE">
+				<comment>Nouvelle valeur</comment>
+				<attribute name="PositionPin" value="2"></attribute>
+			</variables>
+			<variables name="ET" typeName="UDINT">
+				<comment>Interval entre deux changements en s</comment>
+				<attribute name="PositionPin" value="6"></attribute>
+			</variables>
+		</outputParameters>
+		<privateLocalVariables>
+			<variables name="_in" typeName="BYTE"></variables>
+			<variables name="SEC" typeName="CTU_UDINT"></variables>
+		</privateLocalVariables>
+		<FBProgram name="MAIN">
+			<STSource>(* ----------------------------------------------------------------------------------------------------
+	Notification des changements de valeur
+
+	Version	Date		Auteur		Note
+	15.00	16.08.2015	GE		.
+	15.01	07.11.2015	GE		.
+
+   ----------------------------------------------------------------------------------------------------	*)
+
+INC := IN&gt;_in;		(* La valeur à augmenté *)
+DEC := IN&lt;_in;		(* La valeur à diminué *)
+CHG := INC or DEC;	(* La valeur à changé *)
+
+if CHG then
+	OLD := _in;	(* Ancienne valeur *)
+	NEW := IN;	(* Nouvelle valeur *)
+	ET := SEC.CV;	(* Interval entre deux changements en s *)
+end_if;
+
+(* Interval entre deux changements en s *)
+SEC (CU := %S6,
+     R := CHG);
+
+(* EOP *)
+_in := IN;
+</STSource>
+		</FBProgram>
+	</FBSource>
+</FBExchangeFile>
