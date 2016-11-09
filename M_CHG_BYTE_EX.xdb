@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FBExchangeFile>
+	<fileHeader company="Schneider Automation" product="Unity Pro XL V11.0 - 151207" dateTime="date_and_time#2016-11-9-10:20:36" content="Fichier source bloc fonctions" DTDVersion="41"></fileHeader>
+	<contentHeader name="DFB" version="0.0.702" dateTime="date_and_time#2016-4-7-17:53:46"></contentHeader>
+	<FBSource nameOfFBType="M_CHG_BYTE_S" version="15.02" dateTime="dt#2016-11-07-12:28:46">
+		<comment>Notification des changements de valeur</comment>
+		<attribute name="TypeCodeCheckSumString" value="A068"></attribute>
+		<attribute name="TypeSignatureCheckSumString" value="E7FD"></attribute>
+		<inputParameters>
+			<variables name="IN" typeName="BYTE">
+				<comment>Entrée</comment>
+				<attribute name="PositionPin" value="1"></attribute>
+			</variables>
+		</inputParameters>
+		<outputParameters>
+			<variables name="INC" typeName="EBOOL">
+				<comment>La valeur à augmenté</comment>
+				<attribute name="PositionPin" value="5"></attribute>
+			</variables>
+			<variables name="NEW" typeName="BYTE">
+				<comment>Nouvelle valeur</comment>
+				<attribute name="PositionPin" value="2"></attribute>
+			</variables>
+			<variables name="CHG" typeName="EBOOL">
+				<comment>La valeur à changé</comment>
+				<attribute name="PositionPin" value="3"></attribute>
+			</variables>
+			<variables name="DEC" typeName="EBOOL">
+				<comment>La valeur à diminué</comment>
+				<attribute name="PositionPin" value="4"></attribute>
+			</variables>
+			<variables name="OLD" typeName="BYTE">
+				<comment>Dernière valeur</comment>
+				<attribute name="PositionPin" value="1"></attribute>
+			</variables>
+		</outputParameters>
+		<privateLocalVariables>
+			<variables name="_in" typeName="BYTE"></variables>
+		</privateLocalVariables>
+		<FBProgram name="MAIN">
+			<STSource>(* ----------------------------------------------------------------------------------------------------
+	Notification des changements de valeur
+
+	Version	Date		Auteur		Note
+	15.00	27.08.2015	GE		.
+	15.01	11.07.2016	GE		- Initialisation sur premier cycle.
+						- Ajout de la sortie OLD : dernière valeur.
+	15.02	07.11.2016	GE		- Renomage M_CHG_*_S
+						- Ajout sortie NEW : nouvelle valeur
+						- Uniformisation M_CHG_*_EX
+
+   ----------------------------------------------------------------------------------------------------	*)
+
+
+INC := IN&gt;_in;		(* La valeur à augmenté *)
+DEC := IN&lt;_in;		(* La valeur à diminué *)
+CHG := INC or DEC;	(* La valeur à changé *)
+
+if CHG then
+	OLD := _in;	(* Ancienne valeur *)
+	NEW := IN;	(* Nouvelle valeur *)
+end_if;
+
+(* EOP *)
+_in := IN;
+</STSource>
+		</FBProgram>
+	</FBSource>
+</FBExchangeFile>
